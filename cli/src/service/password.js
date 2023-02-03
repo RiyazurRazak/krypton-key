@@ -10,7 +10,7 @@ const numbers = ["1234567890"];
 const specialCharecters = ["!@#$%^&*()_-+=;?<>"];
 
 const passwordInspectionLine = (password) => {
-  const generatedPassword = password;
+  let generatedPassword = password;
   const lowerCaseRegx = /^(?=.*[a-z]).*$/;
   const upperCaseRegex = /^(?=.*[A-Z]).*$/;
   const digitRegex = /^(?=.*[0-9]).*$/;
