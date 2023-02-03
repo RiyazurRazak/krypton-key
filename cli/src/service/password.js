@@ -4,10 +4,93 @@ const nanoid = customAlphabet(
   "A^}b,[H(Ra@9yxCLuO`k4?V5:qcK*_)TN7>l&.M~z#p=Ef+W2YFe'jU1{IJ6i$]0Qwtosr%B-nGdm!PX83h;ZvgD<S"
 );
 
-const lowerCaseLetters = ["abcdefghijklmnopqrstuvwxyz"];
-const upperCaseLetters = ["ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
-const numbers = ["1234567890"];
-const specialCharecters = ["!@#$%^&*()_-+=;?<>"];
+const lowerCaseLetters = [
+  "a",
+  "b",
+  "c",
+  "d",
+  "e",
+  "f",
+  "g",
+  "h",
+  "i",
+  "j",
+  "k",
+  "l",
+  "m",
+  "n",
+  "o",
+  "p",
+  "q",
+  "r",
+  "s",
+  "t",
+  "u",
+  "v",
+  "w",
+  "x",
+  "y",
+  "z",
+];
+const upperCaseLetters = [
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+  "U",
+  "V",
+  "W",
+  "X",
+  "Y",
+  "Z",
+];
+const numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
+const specialCharecters = [
+  "!",
+  "@",
+  "#",
+  "$",
+  "%",
+  "^",
+  "&",
+  "*",
+  "(",
+  ")",
+  "_",
+  "-",
+  "+",
+  "=",
+  ";",
+  "?",
+  "<",
+  ">",
+  "%",
+  "[",
+  "]",
+  "`",
+  ":",
+  ".",
+  "~",
+  "'",
+  "{",
+  "}",
+];
 
 const passwordInspectionLine = (password) => {
   let generatedPassword = password.split("");
@@ -43,6 +126,7 @@ const passwordInspectionLine = (password) => {
     );
     const character =
       numbers[Math.floor(Math.random() * (numbers.length - 0 + 1) + 0)];
+
     generatedPassword[passwordIndex] = character;
   }
   if (!specialCharectersRegex.test(generatedPassword)) {
