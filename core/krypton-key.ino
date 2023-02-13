@@ -56,12 +56,10 @@ void loop()
 
 void readMemory(unsigned char blockAddress)
 {
-    Serial.println(blockAddress);
     char data[100];
-    int startIndex = 0;
+    int startIndex = 2034;
     int ID = blockAddress;
     int prevValue = EEPROM.read(0);
-    Serial.println(ID);
     for (int i = 0; i < EEPROM.length(); i++)
     {
         if (i != 0)
@@ -69,27 +67,39 @@ void readMemory(unsigned char blockAddress)
             prevValue = EEPROM.read(i - 1);
         }
         int value = EEPROM.read(i);
-        Serial.println(value);
+        if (value == ID && i == 0)
+        {
+            startIndex = i;
+            break;
+        }
         if (value == ID && prevValue == 124)
         {
             startIndex = i;
             break;
         }
     }
-    startIndex++;
-    int idx = 0;
-    while (EEPROM[startIndex] != 124)
+    if (startIndex != 2034)
     {
-        data[idx++] = EEPROM[startIndex++];
+        startIndex++;
+        int idx = 0;
+        while (EEPROM[startIndex] != 124)
+        {
+            data[idx++] = EEPROM[startIndex++];
+        }
+        String encryptedText = String(data);
+        byte buffer[encryptedText.length()];
+        byte decrypt[encryptedText.length()];
+        encryptedText.getBytes(buffer, encryptedText.length());
+        aes128.decryptBlock(decrypt, buffer);
+        String decryptPassword = String((char *)decrypt);
+        Serial.println(String(decryptPassword));
+        Keyboard.print(decryptPassword);
+        fingerprint.ctrlLED(fingerprint.eFastBlink, fingerprint.eLEDGreen, 3);
     }
-    String encryptedText = String(data);
-    byte buffer[encryptedText.length()];
-    byte decrypt[encryptedText.length()];
-    encryptedText.getBytes(buffer, encryptedText.length());
-    aes128.decryptBlock(decrypt, buffer);
-    String decryptPassword = String((char *)decrypt);
-    Keyboard.println(decryptPassword);
-    fingerprint.ctrlLED(fingerprint.eFastBlink, fingerprint.eLEDGreen, 3);
+    else
+    {
+        fingerprint.ctrlLED(fingerprint.eFastBlink, fingerprint.eLEDRed, 2);
+    }
 }
 
 int getMemoryIndex()
@@ -190,38 +200,95 @@ void deleteFingerprint()
         {
             int ID = ret;
             Serial.println(String(INFO) + String(":Processing... Don't Exit 🥶"));
-            int startIndex = 0;
+            int startIndex = 2034;
+            int previous = EEPROM.read(0);
             for (int i = 0; i < EEPROM.length(); i++)
             {
+                if (i != 0)
+                {
+                    previous = EEPROM.read(i - 1);
+                }
                 int value = EEPROM.read(i);
-                if (value == ID)
+                if (value == ID && previous == 124)
                 {
                     startIndex = i;
                     break;
                 }
             }
-            int pointer = startIndex;
-            while (EEPROM[pointer] != 124)
+            if (startIndex != 2034)
             {
-                pointer++;
+                int pointer = startIndex;
+                while (EEPROM[pointer] != 124)
+                {
+                    pointer++;
+                }
+                int endIndex = ++pointer;
+                while (pointer < EEPROM.length())
+                {
+                    EEPROM[startIndex++] = EEPROM[pointer++];
+                    EEPROM[pointer - 1] = 0;
+                }
+                for (int i = startIndex; i < endIndex; i++)
+                {
+                    EEPROM[i] = 0;
+                }
+                fingerprint.delFingerprint(ID);
+                Serial.println(String(SUCCESS) + String(":Successfully Deleted"));
             }
-            int endIndex = ++pointer;
-            while (pointer < EEPROM.length())
+            else
             {
-                EEPROM[startIndex++] = EEPROM[pointer++];
-                EEPROM[pointer - 1] = 0;
+                fingerprint.delFingerprint(ID);
+                Serial.println(String(SUCCESS) + String(":Successfully Deleted Fingerprint"));
+                fingerprint.ctrlLED(fingerprint.eFastBlink, fingerprint.eLEDRed, 2);
             }
-            for (int i = startIndex; i < endIndex; i++)
-            {
-                EEPROM[i] = 0;
-            }
-            fingerprint.delFingerprint(ID);
-            Serial.println(String(SUCCESS) + String(":Successfully Deleted"));
         }
         else
         {
             fingerprint.ctrlLED(fingerprint.eFastBlink, fingerprint.eLEDRed, 3);
             Serial.println(String(ERROR) + String(":Invalid Fingerprint Detected !!!"));
+        }
+    }
+}
+
+void addSmartlinking()
+{
+    fingerprint.ctrlLED(fingerprint.eBreathing, fingerprint.eLEDYellow, 0);
+    uint8_t ret = 0;
+    if ((fingerprint.collectionFingerprint(5)) != ERR_ID809)
+    {
+        fingerprint.ctrlLED(fingerprint.eFastBlink, fingerprint.eLEDCyan, 3);
+        while (fingerprint.detectFinger())
+            ;
+        ret = fingerprint.search();
+        if (ret != 0)
+        {
+            Serial.println(String("KEAX:") + String(DEVICE_ID) + String("|") + String(ret));
+        }
+        else
+        {
+            fingerprint.ctrlLED(fingerprint.eFastBlink, fingerprint.eLEDRed, 3);
+        }
+    }
+}
+
+void getSmartLinkPassword(String id)
+{
+    fingerprint.ctrlLED(fingerprint.eBreathing, fingerprint.eLEDYellow, 0);
+    int fingerId = id.charAt(0) - '0';
+    char Id = (char)fingerId;
+    if ((fingerprint.collectionFingerprint(5)) != ERR_ID809)
+    {
+        fingerprint.ctrlLED(fingerprint.eFastBlink, fingerprint.eLEDCyan, 3);
+        while (fingerprint.detectFinger())
+            ;
+        uint8_t ret = fingerprint.search();
+        if (ret != 0)
+        {
+            readMemory(Id);
+        }
+        else
+        {
+            fingerprint.ctrlLED(fingerprint.eFastBlink, fingerprint.eLEDRed, 3);
         }
     }
 }
@@ -242,6 +309,14 @@ void parseCommand(String command)
             Serial.println(String(PONG) + String(":INVALIDATE"));
         }
     }
+    else if (commandType == GET_DEVICE_ID)
+    {
+        Serial.println(String("KEGX:") + String(DEVICE_ID));
+    }
+    else if (commandType == GET_SMART_LINK_PASSWORD)
+    {
+        getSmartLinkPassword(message);
+    }
     else if (commandType == TRANSMIT_PASSWORD)
     {
         storeInMemory(message);
@@ -252,16 +327,15 @@ void parseCommand(String command)
     }
     else if (commandType == COUNT_FINGERPRINTS)
     {
-        for (int i = 0; i < EEPROM.length(); i++)
-        {
-            int value = EEPROM.read(i);
-            Serial.println(value);
-        }
         Serial.println(String(SUCCESS) + String(":Total Registered Fingerprints are ") + String(fingerprint.getEnrollCount()));
     }
     else if (commandType == DELETE_FINGERPRINT)
     {
         deleteFingerprint();
+    }
+    else if (commandType == SMARTLINK_ADD)
+    {
+        addSmartlinking();
     }
     else
     {

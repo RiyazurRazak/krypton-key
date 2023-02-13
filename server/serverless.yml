@@ -1,0 +1,64 @@
+app: krypton-smart-link
+service: server
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: go1.x
+  region: us-east-1
+  stackName: krypton-smart-link-server
+  httpApi:
+    cors: true
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+          Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/KRYPTON_SMART_LINK"
+
+package:
+  patterns:
+    - "!./**"
+    - ./bin/**
+
+functions:
+  create:
+    handler: bin/create
+    package:
+      include:
+        - ./bin/create
+    events:
+      - httpApi:
+          path: /create
+          method: post
+  get:
+    handler: bin/get
+    package:
+      include:
+        - ./bin/get
+    events:
+      - httpApi:
+          path: /get
+          method: get
+resources:
+  Resources:
+    KryptonDynamoDbTable:
+      Type: "AWS::DynamoDB::Table"
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: KRYPTON_SMART_LINK
+        SSESpecification:
+          SSEEnabled: true

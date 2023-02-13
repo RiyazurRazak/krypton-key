@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/popup.css" />
+  </head>
+  <body>
+    <nav class="nav">
+        <h2>Krypton Extension</h2>
+    </nav>
+    <div class="tab_root">
+      <div id="active-tab" class="tab active">Active Tab</div>
+      <div id="add-tab" class="tab">Add Smart Linking</div>
+      <div id="credits-tab" class="tab">Credits</div>
+    </div>
+    <div class="url_root">
+      <p id="url" class="url"></p>
+    </div>
+    <div id="active-panel" class="panel">
+      <h4>Access the extension by using Ctrl+Shift+K</h4>
+      <p>For Smart Linking please connect the krypton key in your PC</p>
+      <hr class="divider" />
+      <p class="info">* Smart Linking don't store your password / biometric data in our cloud servers</p>
+    </div>
+    <div id="add-panel" style="display: none" class="panel">
+      <input
+        type="email"
+        id="username"
+        class="input"
+        placeholder="Enter Your Username/Email"
+      />
+      <button id="link" class="button">Link It</button>
+      <p style="display: none" id="info" class="info"></p>
+      <br />
+      <hr class="divider" />
+      <p class="info">* Smart Linking don't store your password / biometric data in our cloud servers</p>
+    </div>
+    <div id="credits-panel" style="display: none" class="panel">
+      <h3>Developed By</h3>
+      <div class="authors__root">
+        <p>Dr. P. Sivaranjani, R. Ragul, N. Riyazur Razak, V.T. Saran</p>
+      </div>
+      
+    </div>
+    <script src="./scripts/popup.js"></script>
+  </body>
+</html>

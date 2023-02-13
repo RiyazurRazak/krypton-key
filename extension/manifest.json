@@ -1,3 +1,46 @@
 {
-    
-}
+    "manifest_version": 3,
+    "name": "Krypton Key",
+    "description": "Smart Linking For Krypton Key",
+    "version": "1.0",
+    "author": "Riyazur Razak, Saran, Ragul",
+    "icons": {
+      "16": "images/test.jpg",
+      "32": "images/test.jpg",
+      "48": "images/test.jpg",
+      "128": "images/test.jpg"
+    },
+    "action": {
+        "default_popup": "popup.html",
+        "default_title": "Krypton Key",
+        "default_icon": {
+            "16": "images/test.jpg",
+            "32": "images/test.jpg",
+            "48": "images/test.jpg",
+            "128": "images/test.jpg"
+          }
+    },
+    "content_scripts": [
+      {
+        "js": [
+          "scripts/p5.js",
+          "scripts/webserial.js",
+          "scripts/content.js"
+        ],
+        "css": ["css/inject.css"],
+        "matches": ["<all_urls>"]
+      }
+    ],
+    "background": {
+        "service_worker": "scripts/background.js"
+    },
+    "permissions": ["scripting", "activeTab", "tabs"],
+    "commands": {
+      "_execute_action": {
+        "suggested_key": {
+          "default": "Ctrl+Shift+K",
+          "mac": "Command+K"
+        }
+      }
+    }
+  }

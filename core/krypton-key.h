@@ -6,6 +6,7 @@
 #include <EEPROM.h>
 #define BAUD_RATE 57600
 #define KRYPTON_AUTH "5d9f629d-faa4-452f"
+#define DEVICE_ID "Pf4R;*#1"
 #define ERROR "E"
 #define DONE "D"
 #define SUCCESS "S"
@@ -18,3 +19,6 @@
 #define ADD_FINGERPRINT "ANFP"
 #define COUNT_FINGERPRINTS "CFP"
 #define DELETE_FINGERPRINT "DFP"
+#define SMARTLINK_ADD "KEA"
+#define GET_DEVICE_ID "KEG"
+#define GET_SMART_LINK_PASSWORD "KEP"

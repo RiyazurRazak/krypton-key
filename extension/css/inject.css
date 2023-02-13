@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;700&display=swap');
+
+.krypton__overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba( 0, 0, 0, 0.2 );
+    backdrop-filter: blur( 20px );
+    -webkit-backdrop-filter: blur( 20px );
+    border: 1px solid rgba( 255, 255, 255, 0.18 );   
+    z-index: 999;
+}
+
+.krypton__modal_body{
+    background-color: #111927;
+    background-image: 
+        radial-gradient(at 47% 33%, hsl(211.29, 100%, 50%) 0, transparent 59%), 
+        radial-gradient(at 82% 65%, hsl(218.00, 39%, 11%) 0, transparent 55%);
+    width: 30vw;
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    border-radius: 8px;
+    margin: auto;
+    z-index: 99;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Noto Sans', sans-serif;
+    z-index: 999999999999999;
+}
+
+.krypton__modal{
+    backdrop-filter: blur(25px) saturate(88%);
+    -webkit-backdrop-filter: blur(25px) saturate(88%);
+    background-color: rgba(17, 25, 40, 0.48);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.125);
+    text-align: center;
+    color: #fff;
+    height: 80%;
+    margin: 2.5vw;
+    padding: 2.5vw;
+}
+.krypton__close_ico{
+    position: absolute;
+    right: 20px;
+    cursor: pointer;
+    font-size: 12px;
+}
+.krypton__modal h1{
+    font-weight: 700;
+    margin: 18px 0;
+    font-size: 24px;
+    color: #fff;
+}
+.krypton__modal h4{
+    margin: 16px 0;
+    font-size: 16px;
+    color: #fff;
+}
+.krypton__select{
+  border: 1px solid rgba(255, 255, 255, 0.125);
+  outline: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  background-color: #1F2A37;
+  color: #fff;
+  width: 80%;
+  margin: 18px 0;
+  font-family: 'Noto Sans', sans-serif;
+}
+.krypton__button{
+  border: 1px solid rgba(255, 255, 255, 0.125);
+  outline: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  background-color: #007aff;
+  color: #fff;
+  cursor: pointer;
+  margin-bottom: 18px;
+  font-family: 'Noto Sans', sans-serif;
+  line-height: 1;
+}
+  
