@@ -5,19 +5,19 @@
     "version": "1.0",
     "author": "Riyazur Razak, Saran, Ragul",
     "icons": {
-      "16": "images/icon-16.jpg",
-      "32": "images/icon-32.jpg",
-      "48": "images/icon-64.jpg",
-      "128": "images/icon-128.jpg"
+      "16": "images/icon-16.png",
+      "32": "images/icon-32.png",
+      "48": "images/icon-64.png",
+      "128": "images/icon-128.png"
     },
     "action": {
         "default_popup": "popup.html",
         "default_title": "Krypton Key",
         "default_icon": {
-            "16": "images/icon-16.jpg",
-            "32": "images/icon-32.jpg",
-            "48": "images/icon-64.jpg",
-            "128": "images/icon-128.jpg"
+            "16": "images/icon-16.png",
+            "32": "images/icon-32.png",
+            "48": "images/icon-64.png",
+            "128": "images/icon-128.png"
           }
     },
     "content_scripts": [
