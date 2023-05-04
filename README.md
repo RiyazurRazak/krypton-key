@@ -12,6 +12,8 @@
 
 - Fabricated with 3D printed case using polylactic acid (PLA) material
 
+![krypton key](./images/kryptonkey.jpg)
+
 ### Access Flow
 
 ![access flow](./images/access-flow.png)
